@@ -1,0 +1,121 @@
+# Keycloak
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+spec:
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:21.0
+        ports:
+        - containerPort: 8080
+        args:
+          - "start-dev"
+        env:
+          - name: KEYCLOAK_ADMIN
+            value: admin
+          - name: KEYCLOAK_ADMIN_PASSWORD
+            value: admin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+spec:
+  selector:
+    app: keycloak
+  ports:
+  - port: 80
+    targetPort: 8080
+    nodePort: 30000
+  type: NodePort
+---
+# NExtjs
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextjs
+spec:
+  selector:
+    matchLabels:
+      app: nextjs
+  template:
+    metadata:
+      labels:
+        app: nextjs
+    spec:
+      containers:
+      - name: nextjs
+        image: fabricioveronez/gpt-front
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          value: mysql://root:root@mysql:3306/chat
+        - name: NEXTAUTH_URL
+          value: http://localhost:3000/api/auth
+        - name: NEXTAUTH_SECRET
+          value: "123456"
+        - name: KEYCLOAK_CLIENT_ID
+          value: nextjs
+        - name: KEYCLOAK_CLIENT_SECRET
+          value: 7qomDHTEVoqKejC9qDbBobo529F3JayS
+        - name: KEYCLOAK_ISSUER
+          value: http://host.docker.internal:9000/realms/master
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextjs
+spec:
+  selector:
+    app: nextjs
+  ports:
+  - port: 3000
+    targetPort: 3000
+    nodePort: 30001
+  type: NodePort
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0.33
+        ports:
+        - containerPort: 3306
+        env: 
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: chat
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  selector:
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
