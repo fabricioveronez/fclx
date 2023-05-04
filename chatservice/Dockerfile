@@ -18,7 +18,8 @@ COPY . .
 # Build the Rust library
 RUN cd tiktoken-cffi && \
     cargo build --release --target=x86_64-unknown-linux-gnu && \
-    cp target/x86_64-unknown-linux-gnu/release/libtiktoken.a /go/src/tiktoken-cffi/target/release/libtiktoken.a
+    mkdir -p /go/pkg/mod/github.com/j178/tiktoken-go@v0.2.1/tiktoken-cffi/target/release/ && \
+    cp target/x86_64-unknown-linux-gnu/release/libtiktoken.a /go/pkg/mod/github.com/j178/tiktoken-go@v0.2.1/tiktoken-cffi/target/release/libtiktoken.a
 
 
 # Build the Go program
@@ -43,7 +44,11 @@ WORKDIR /app
 # Copy files and directories from the build stage
 COPY --from=build --chown=appuser:appuser /go/src/chatservice .
 COPY --from=build --chown=appuser:appuser /go/src/tiktoken-cffi/libtiktoken.a libtiktoken/
+COPY --from=build --chown=appuser:appuser /go/src/entrypoint.sh .
 COPY --from=build --chown=appuser:appuser /go/src/.env.example .env
+COPY --from=build --chown=appuser:appuser /go/src/sql/migrations/ sql/
 
+RUN chmod +x ./entrypoint.sh
 # Run the application
-CMD ["./chatservice"]
+CMD ["./entrypoint.sh"]
+#CMD [ "tail", "-f", "/dev/null" ]
