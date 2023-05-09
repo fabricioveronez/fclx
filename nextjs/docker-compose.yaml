@@ -1,5 +1,9 @@
 version: "3"
 
+networks:
+  fcexperience:
+    driver: bridge
+
 services:
   app:
     build: .
@@ -8,9 +12,9 @@ services:
     volumes:
       - .:/home/node/app
     extra_hosts:
-      - "host.docker.internal:172.17.0.1"  
-    # networks:
-    #   - fcexperience
+      - "host.docker.internal:172.25.48.1"  
+    networks:
+      - fcexperience
 
   db:
     image: mysql:8.0.30-debian
@@ -19,17 +23,17 @@ services:
       - MYSQL_DATABASE=chat
     volumes:
       - .docker/dbdata:/var/lib/mysql
-     # networks:
-     #   - fcexperience
+    networks:
+      - fcexperience
   
-  keycloak:
-    image: quay.io/keycloak/keycloak:21.0
-    command: start-dev
-    ports:
-      - 9000:8080
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+  # keycloak:
+  #   image: quay.io/keycloak/keycloak:21.0
+  #   command: start-dev
+  #   ports:
+  #     - 9000:8080
+  #   environment:
+  #     KEYCLOAK_ADMIN: admin
+  #     KEYCLOAK_ADMIN_PASSWORD: admin
     # networks:
     #   - fcexperience
 

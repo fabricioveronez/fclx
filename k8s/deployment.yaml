@@ -1,89 +1,3 @@
-# Keycloak
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: keycloak
-spec:
-  selector:
-    matchLabels:
-      app: keycloak
-  template:
-    metadata:
-      labels:
-        app: keycloak
-    spec:
-      containers:
-      - name: keycloak
-        image: quay.io/keycloak/keycloak:21.0
-        ports:
-        - containerPort: 8080
-        args:
-          - "start-dev"
-        env:
-          - name: KEYCLOAK_ADMIN
-            value: admin
-          - name: KEYCLOAK_ADMIN_PASSWORD
-            value: admin
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: keycloak
-spec:
-  selector:
-    app: keycloak
-  ports:
-  - port: 80
-    targetPort: 8080
-    nodePort: 30000
-  type: NodePort
----
-# NExtjs
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nextjs
-spec:
-  selector:
-    matchLabels:
-      app: nextjs
-  template:
-    metadata:
-      labels:
-        app: nextjs
-    spec:
-      containers:
-      - name: nextjs
-        image: fabricioveronez/gpt-front
-        ports:
-        - containerPort: 3000
-        env:
-        - name: DATABASE_URL
-          value: mysql://root:root@mysql:3306/chat
-        - name: NEXTAUTH_URL
-          value: http://localhost:3000/api/auth
-        - name: NEXTAUTH_SECRET
-          value: "123456"
-        - name: KEYCLOAK_CLIENT_ID
-          value: nextjs
-        - name: KEYCLOAK_CLIENT_SECRET
-          value: 7qomDHTEVoqKejC9qDbBobo529F3JayS
-        - name: KEYCLOAK_ISSUER
-          value: http://host.docker.internal:9000/realms/master
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nextjs
-spec:
-  selector:
-    app: nextjs
-  ports:
-  - port: 3000
-    targetPort: 3000
-    nodePort: 30001
-  type: NodePort
---- 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -99,14 +13,16 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:8.0.33
+        image: mysql:8
         ports:
         - containerPort: 3306
-        env: 
+        env:
         - name: MYSQL_ROOT_PASSWORD
-          value: root
+          value: "root"
         - name: MYSQL_DATABASE
-          value: chat
+          value: "chat_test"
+        - name: MYSQL_PASSWORD
+          value: "root"
 ---
 apiVersion: v1
 kind: Service
@@ -118,4 +34,84 @@ spec:
   ports:
   - port: 3306
     targetPort: 3306
-
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatservice
+spec:
+  selector:
+    matchLabels:
+      app: chatservice
+  template:
+    metadata:
+      labels:
+        app: chatservice
+    spec:
+      containers:
+      - name: chatservice
+        image: fabricioveronez/gpt-chatservice
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 50051
+          name: grpc
+          protocol: TCP
+        env:
+        - name: DB_DRIVER
+          value: mysql
+        - name: DB_HOST
+          value: mysql     
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_USER
+          value: root
+        - name: DB_PASSWORD
+          value: root
+        - name: DB_NAME
+          value: chat_test
+        - name: WEB_SERVER_PORT
+          value: "8080"
+        - name: GRPC_SERVER_PORT
+          value: "50051"     
+        - name: INITIAL_CHAT_MESSAGE
+          value: "Seu nome é FC. Você é a inteligência artificial da Full Cycle. Você é da suporte a programadores e arquitetos de software"
+        - name: OPENAI_API_KEY
+          value: "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"      
+        - name: MODEL
+          value: gpt-3.5-turbo
+        - name: MODEL_MAX_TOKENS
+          value: "4096"
+        - name: TEMPERATURE
+          value: "0.2"  
+        - name: TOP_P
+          value: "0.2"
+        - name: N
+          value: "1"
+        - name: MAX_TOKENS
+          value: "300" 
+        - name: AUTH_TOKEN
+          value: "123456"
+        - name: STOP
+          value: "['\\super-end\\']"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatservice
+spec:
+  selector:
+    app: chatservice
+  type: NodePort
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 30000
+      name: http
+    - port: 50051
+      protocol: TCP
+      targetPort: 50051
+      nodePort: 30001
+      name: grpc

@@ -1,0 +1,15 @@
+apiVersion: skaffold/v4beta4
+kind: Config
+metadata:
+  name: fclx
+build:
+  artifacts:
+    - image: fabricioveronez/gpt-chatservice
+      context: chatservice
+      docker:
+        dockerfile: Dockerfile
+  
+manifests:
+  rawYaml:
+    - k8s/deployment.yaml
+

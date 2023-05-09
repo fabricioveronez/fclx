@@ -51,4 +51,3 @@ COPY --from=build --chown=appuser:appuser /go/src/sql/migrations/ sql/
 RUN chmod +x ./entrypoint.sh
 # Run the application
 CMD ["./entrypoint.sh"]
-#CMD [ "tail", "-f", "/dev/null" ]
