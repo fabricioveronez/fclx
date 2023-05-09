@@ -1,7 +1,17 @@
 FROM node:19-slim
 
-WORKDIR /home/node/app
+WORKDIR /app
 
-USER node
+COPY package*.json ./
 
-CMD ["tail", "-f", "/dev/null"]
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+RUN chmod +x ./entrypoint.sh
+
+CMD [ "./entrypoint.sh" ]

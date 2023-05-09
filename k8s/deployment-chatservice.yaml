@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root"
+        - name: MYSQL_DATABASE
+          value: "chat_test"
+        - name: MYSQL_PASSWORD
+          value: "root"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  selector:
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatservice
+spec:
+  selector:
+    matchLabels:
+      app: chatservice
+  template:
+    metadata:
+      labels:
+        app: chatservice
+    spec:
+      containers:
+      - name: chatservice
+        image: fabricioveronez/gpt-chatservice
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 50051
+          name: grpc
+          protocol: TCP
+        env:
+        - name: DB_DRIVER
+          value: mysql
+        - name: DB_HOST
+          value: mysql     
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_USER
+          value: root
+        - name: DB_PASSWORD
+          value: root
+        - name: DB_NAME
+          value: chat_test
+        - name: WEB_SERVER_PORT
+          value: "8080"
+        - name: GRPC_SERVER_PORT
+          value: "50051"     
+        - name: INITIAL_CHAT_MESSAGE
+          value: "Seu nome é FC. Você é a inteligência artificial da Full Cycle. Você é da suporte a programadores e arquitetos de software"
+        - name: OPENAI_API_KEY
+          value: "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"      
+        - name: MODEL
+          value: gpt-3.5-turbo
+        - name: MODEL_MAX_TOKENS
+          value: "4096"
+        - name: TEMPERATURE
+          value: "0.2"  
+        - name: TOP_P
+          value: "0.2"
+        - name: N
+          value: "1"
+        - name: MAX_TOKENS
+          value: "300" 
+        - name: AUTH_TOKEN
+          value: "123456"
+        - name: STOP
+          value: "['\\super-end\\']"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatservice
+spec:
+  selector:
+    app: chatservice
+  type: NodePort
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 30000
+      name: http
+    - port: 50051
+      protocol: TCP
+      targetPort: 50051
+      nodePort: 30001
+      name: grpc

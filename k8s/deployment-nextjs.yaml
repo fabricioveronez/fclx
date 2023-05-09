@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-next
+spec:
+  selector:
+    matchLabels:
+      app: mysql-next
+  template:
+    metadata:
+      labels:
+        app: mysql-next
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0.30-debian
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root"
+        - name: MYSQL_DATABASE
+          value: "chat"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-next
+spec:
+  selector:
+    app: mysql-next
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextjs
+spec:
+  selector:
+    matchLabels:
+      app: nextjs
+  template:
+    metadata:
+      labels:
+        app: nextjs
+    spec:
+      containers:
+      - name: nextjs
+        image: fabricioveronez/gpt-nextjs
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextjs
+spec:
+  selector:
+    app: nextjs
+  type: NodePort
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000
+      nodePort: 30002
+      name: http

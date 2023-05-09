@@ -8,8 +8,13 @@ build:
       context: chatservice
       docker:
         dockerfile: Dockerfile
+    # - image: fabricioveronez/gpt-nextjs
+    #   context: nextjs
+    #   docker:
+    #     dockerfile: Dockerfile        
   
 manifests:
   rawYaml:
-    - k8s/deployment.yaml
+    - k8s/deployment-chatservice.yaml
+#    - k8s/deployment-nextjs.yaml
 

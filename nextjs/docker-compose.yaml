@@ -12,7 +12,7 @@ services:
     volumes:
       - .:/home/node/app
     extra_hosts:
-      - "host.docker.internal:172.25.48.1"  
+      - "host.docker.internal:192.168.15.153"  
     networks:
       - fcexperience
 
