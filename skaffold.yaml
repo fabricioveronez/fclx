@@ -17,4 +17,5 @@ manifests:
   rawYaml:
     - k8s/deployment-chatservice.yaml
     - k8s/deployment-nextjs.yaml
+    - k8s/deployment-keycloak.yaml
 
