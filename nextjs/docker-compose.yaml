@@ -6,7 +6,9 @@ networks:
 
 services:
   app:
-    build: .
+    build: 
+      dockerfile: Dockerfile.prod
+      context: .
     ports:
       - 3000:3000
     volumes:
