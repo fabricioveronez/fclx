@@ -8,14 +8,18 @@ const packageDefinition = protoLoader.loadSync(
   path.resolve(process.cwd(), "proto", "chat.proto")
 );
 
+const CHATSERVICE_URL: string = process.env.CHATSERVICE_URL as string;
+
 const proto = grpc.loadPackageDefinition(
   packageDefinition
 ) as unknown as ProtoGrpcType;
 
 export const chatClient = new proto.pb.ChatService(
-  process.env.CHATSERVICE_URL as string,
+  CHATSERVICE_URL,
   grpc.credentials.createInsecure()
 );
+
+export const dynamic = 'force-dynamic';
 
 // localhost - ao proprio 
 
