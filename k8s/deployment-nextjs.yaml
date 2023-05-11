@@ -53,6 +53,23 @@ spec:
         - containerPort: 3000
           name: http
           protocol: TCP
+        env:
+        - name: DATABASE_URL
+          value: mysql://root:root@mysql-next:3306/chat
+        - name: NEXTAUTH_URL
+          value: http://localhost:8082/api/auth
+        - name: NEXTAUTH_SECRET
+          value: "123456"
+        - name: KEYCLOAK_CLIENT_ID
+          value: devopspro
+        - name: KEYCLOAK_CLIENT_SECRET
+          value: EdzyY0JWfxjhgv4MnqxrxvCjRAjI55Qq
+        - name: KEYCLOAK_ISSUER
+          value: http://keycloak:8080/realms/master
+        - name: NEXT_PUBLIC_API_URL
+          value: http://localhost:8082/api
+        - name: CHATSERVICE_URL
+          value: "chatservice:50051"
 ---
 apiVersion: v1
 kind: Service

@@ -4,10 +4,10 @@ metadata:
   name: fclx
 build:
   artifacts:
-    - image: fabricioveronez/gpt-chatservice
-      context: chatservice
-      docker:
-        dockerfile: Dockerfile
+    # - image: fabricioveronez/gpt-chatservice
+    #   context: chatservice
+    #   docker:
+    #     dockerfile: Dockerfile
     - image: fabricioveronez/gpt-nextjs
       context: nextjs
       docker:
@@ -15,7 +15,7 @@ build:
   
 manifests:
   rawYaml:
-    - k8s/deployment-chatservice.yaml
+    # - k8s/deployment-chatservice.yaml
     - k8s/deployment-nextjs.yaml
-    - k8s/deployment-keycloak.yaml
+    # - k8s/deployment-keycloak.yaml
 

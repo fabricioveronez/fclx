@@ -1,8 +1,8 @@
 
 
 export default class ClientHttp {
-
-    static API_URL: string = 'http://localhost:3000/api' as string;
+  
+    static API_URL: string = process.env.NEXT_PUBLIC_API_URL as string;
   
     static async get(path: string) {
       const response = await fetch(`${ClientHttp.API_URL}/${path}`);

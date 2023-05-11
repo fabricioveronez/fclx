@@ -7,12 +7,12 @@ metadata:
 spec:
   ports:
   - name: http
-    port: 8080
+    port: 80
     targetPort: 8080
     nodePort: 30003
   selector:
     app: keycloak
-  type: NodePort
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: keycloak
-        image: quay.io/keycloak/keycloak:21.1.1
+        image: quay.io/keycloak/keycloak:21.0
         args: ["start-dev"]
         env:
         - name: KEYCLOAK_ADMIN
@@ -44,7 +44,3 @@ spec:
         ports:
         - name: http
           containerPort: 8080
-        readinessProbe:
-          httpGet:
-            path: /realms/master
-            port: 8080

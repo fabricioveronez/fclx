@@ -16,4 +16,8 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD [ "npm", "start" ]
+#CMD [ "npm", "start" ]
+
+RUN chmod +x ./entrypoint.sh
+
+CMD [ "./entrypoint.sh" ]
