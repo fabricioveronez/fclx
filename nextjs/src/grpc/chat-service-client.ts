@@ -1,4 +1,4 @@
-import { chatClient } from "./client";
+import { makeChatClient } from "./client";
 import { ChatServiceClient as GrpcChatServiceClient } from "./rpc/pb/ChatService";
 import { Metadata } from "@grpc/grpc-js";
 
@@ -32,6 +32,6 @@ export class ChatServiceClient {
 
 export class ChatServiceClientFactory {
   static create() {
-    return new ChatServiceClient(chatClient);
+    return new ChatServiceClient(makeChatClient());
   }
 }

@@ -14,12 +14,12 @@ const proto = grpc.loadPackageDefinition(
   packageDefinition
 ) as unknown as ProtoGrpcType;
 
-export const chatClient = new proto.pb.ChatService(
-  CHATSERVICE_URL,
-  grpc.credentials.createInsecure()
-);
-
-export const dynamic = 'force-dynamic';
+export function makeChatClient() {
+  return new proto.pb.ChatService(
+    CHATSERVICE_URL,
+    grpc.credentials.createInsecure()
+  );
+}
 
 // localhost - ao proprio 
 
