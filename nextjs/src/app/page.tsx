@@ -30,7 +30,7 @@ function ChatItemError({ children }: { children: any }) {
   return (
     <li className="w-full text-gray-100 bg-gray-800">
       <div className="md:max-w-2xl lg:max-w-xl xl:max-w-3xl py-6 m-auto flex flex-row items-start space-x-4">
-        <Image src="/fullcycle_logo.png" width={30} height={30} alt="" />
+        <Image src="/devops_pro_logo.png" width={30} height={30} alt="" />
         <div className="relative w-[calc(100%-115px)] flex flex-col gap-1">
           <span className="text-red-500">Ops! Ocorreu um erro: {children}</span>
         </div>
@@ -59,7 +59,7 @@ function ChatItem({
       <div className="flex-col">
         <div className="md:max-w-2xl lg:max-w-xl xl:max-w-3xl py-6 m-auto flex flex-row items-start space-x-4">
           {is_from_bot ? (
-            <Image src="/fullcycle_logo.png" width={30} height={30} alt="" />
+            <Image src="/devops_pro_logo.png" width={30} height={30} alt="" />
           ) : (
             <UserIcon className="w-[30px] flex flex-col relative start" />
           )}

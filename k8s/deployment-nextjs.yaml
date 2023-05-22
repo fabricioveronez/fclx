@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-next
+  name: mysql-webapp
 spec:
   selector:
     matchLabels:
-      app: mysql-next
+      app: mysql-webapp
   template:
     metadata:
       labels:
-        app: mysql-next
+        app: mysql-webapp
     spec:
       containers:
       - name: mysql
@@ -20,15 +20,19 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           value: "root"
         - name: MYSQL_DATABASE
-          value: "chat"
+          value: "webchat"
+        - name: MYSQL_USER
+          value: "webchat"
+        - name: MYSQL_PASSWORD
+          value: "webchat"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-next
+  name: mysql-webapp
 spec:
   selector:
-    app: mysql-next
+    app: mysql-webapp
   ports:
   - port: 3306
     targetPort: 3306
@@ -36,52 +40,50 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nextjs
+  name: webapp
 spec:
   selector:
     matchLabels:
-      app: nextjs
+      app: webapp
   template:
     metadata:
       labels:
-        app: nextjs
+        app: webapp
     spec:
       containers:
-      - name: nextjs
-        image: fabricioveronez/gpt-nextjs
+      - name: webapp
+        image: fabricioveronez/gpt-webapp:v1
         ports:
         - containerPort: 3000
           name: http
           protocol: TCP
         env:
         - name: DATABASE_URL
-          value: mysql://root:root@mysql-next:3306/chat
+          value: mysql://root:root@mysql-webapp:3306/webchat
         - name: NEXTAUTH_URL
-          value: http://localhost:8082/api/auth
+          value: http://localhost:30000/api/auth
         - name: NEXTAUTH_SECRET
           value: "123456"
         - name: KEYCLOAK_CLIENT_ID
-          value: devopspro
+          value: gpt-webapp
         - name: KEYCLOAK_CLIENT_SECRET
-          value: EdzyY0JWfxjhgv4MnqxrxvCjRAjI55Qq
+          value: M8IMlr3clrQPR1UWrJmF8ZJQSsPb12rR
         - name: KEYCLOAK_ISSUER
           value: http://keycloak:8080/realms/master
-        - name: NEXT_PUBLIC_API_URL
-          value: http://localhost:8082/api
         - name: CHATSERVICE_URL
           value: "chatservice:50051"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nextjs
+  name: webapp
 spec:
   selector:
-    app: nextjs
+    app: webapp
   type: NodePort
   ports:
-    - port: 3000
+    - port: 80
       protocol: TCP
       targetPort: 3000
-      nodePort: 30002
+      nodePort: 30000
       name: http

@@ -20,9 +20,7 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           value: "root"
         - name: MYSQL_DATABASE
-          value: "chat_test"
-        - name: MYSQL_PASSWORD
-          value: "root"
+          value: "chat_service"
 ---
 apiVersion: v1
 kind: Service
@@ -50,7 +48,7 @@ spec:
     spec:
       containers:
       - name: chatservice
-        image: fabricioveronez/gpt-chatservice
+        image: fabricioveronez/chatservice:v1
         ports:
         - containerPort: 8080
           name: http
@@ -62,7 +60,7 @@ spec:
         - name: DB_DRIVER
           value: mysql
         - name: DB_HOST
-          value: mysql     
+          value: mysql
         - name: DB_PORT
           value: "3306"
         - name: DB_USER
@@ -70,31 +68,17 @@ spec:
         - name: DB_PASSWORD
           value: root
         - name: DB_NAME
-          value: chat_test
+          value: chat_service
         - name: WEB_SERVER_PORT
           value: "8080"
         - name: GRPC_SERVER_PORT
           value: "50051"     
         - name: INITIAL_CHAT_MESSAGE
-          value: "Seu nome é FC. Você é a inteligência artificial da Full Cycle. Você é da suporte a programadores e arquitetos de software"
+          value: "Seu nome é Jarvis. Você é a inteligência artificial da iniciativa DevOps && Cloud. Você da suporte a programadores e profissionais de infraestrutura."
         - name: OPENAI_API_KEY
-          value: "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"      
-        - name: MODEL
-          value: gpt-3.5-turbo
-        - name: MODEL_MAX_TOKENS
-          value: "4096"
-        - name: TEMPERATURE
-          value: "0.2"  
-        - name: TOP_P
-          value: "0.2"
-        - name: N
-          value: "1"
-        - name: MAX_TOKENS
-          value: "300" 
+          value: "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"      
         - name: AUTH_TOKEN
           value: "123456"
-        - name: STOP
-          value: "['\\super-end\\']"
 ---
 apiVersion: v1
 kind: Service
@@ -108,10 +92,10 @@ spec:
     - port: 8080
       protocol: TCP
       targetPort: 8080
-      nodePort: 30000
+      #nodePort: 30000
       name: http
     - port: 50051
       protocol: TCP
       targetPort: 50051
-      nodePort: 30001
+      #nodePort: 30001
       name: grpc
