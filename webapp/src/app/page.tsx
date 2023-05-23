@@ -285,7 +285,7 @@ export default function Home() {
                   rows={1}
                   placeholder="Digite sua pergunta"
                   className="resize-none pr-14 bg-transparent pl-0 outline-none"
-                  defaultValue="Gere uma classe de produto em JavaScript"
+                  defaultValue="Gere um arquivo de deployment para o kubernetes onde execute um nginx"
                 ></textarea>
                 <button
                   type="submit"
