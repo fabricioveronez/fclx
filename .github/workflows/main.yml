@@ -44,6 +44,8 @@ jobs:
     needs: [CI]
 
     steps:
+    - uses: actions/checkout@v3
+
     - name: Configurar as credenciais da AWS
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -59,5 +61,5 @@ jobs:
     - name: Troca dos parametros 
       shell: bash 
       run: |
-        sed -i "s/{{API_TOKEN}}/${{ secrets.OPENAI_API_TOKEN }}/g" ./k8s/deployment-chatservice.yaml
+        sed -i "s/{{API_TOKEN}}/${{ secrets.OPENAI_API_TOKEN }}/g" k8s/deployment-chatservice.yaml
         cat ./k8s/deployment-chatservice.yaml
