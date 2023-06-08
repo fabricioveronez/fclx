@@ -62,7 +62,7 @@ jobs:
       shell: bash 
       run: |
         sed -i "s/{{API_TOKEN}}/${{ secrets.OPENAI_API_TOKEN }}/g" ./k8s/deployment-chatservice.yaml
-        sed -i "s/{{API_TOKEN}}/${{github.run_number}}/g" ./k8s/deployment-chatservice.yaml
+        sed -i "s/{{TAG}}/${{github.run_number}}/g" ./k8s/deployment-chatservice.yaml
         
     - name: Deploy To Cluster
       shell: bash
