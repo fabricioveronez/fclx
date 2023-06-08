@@ -27,8 +27,8 @@ jobs:
         file: ./webapp/Dockerfile
         push: true
         tags: |
-          fabricioveronez/gpt-front:${{github.run_number}}
-          fabricioveronez/gpt-front:latest
+          fabricioveronez/gpt-webapp:${{github.run_number}}
+          fabricioveronez/gpt-webapp:latest
     - name: Construção da imagem Docker ChatService 
       uses: docker/build-push-action@v3.2.0
       with: 
