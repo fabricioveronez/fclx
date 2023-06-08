@@ -61,7 +61,7 @@ spec:
         - name: DATABASE_URL
           value: mysql://root:root@mysql-webapp:3306/webchat
         - name: NEXTAUTH_URL
-          value: http://localhost:30000/api/auth
+          value: http://a2619f17e873b46f18d440a32af0077e-2061854654.us-east-1.elb.amazonaws.com/api/auth
         - name: NEXTAUTH_SECRET
           value: "123456"
         - name: KEYCLOAK_CLIENT_ID
