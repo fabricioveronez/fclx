@@ -62,8 +62,17 @@ jobs:
       shell: bash 
       run: |
         sed -i "s/{{API_TOKEN}}/${{ secrets.OPENAI_API_TOKEN }}/g" ./k8s/deployment-chatservice.yaml
-        sed -i "s/{{TAG}}/${{github.run_number}}/g" ./k8s/deployment-chatservice.yaml
         
     - name: Deploy To Cluster
       shell: bash
       run: kubectl apply -f ./k8s/deployment-chatservice.yaml
+
+    - name: Deploy to Kubernetes cluster
+      uses: Azure/k8s-deploy@v4.9
+      with:
+        manifests: |
+          k8s/deployment-chatservice.yaml
+          k8s/deployment-nextjs.yaml
+        images: |
+          fabricioveronez/gpt-chatservice
+          fabricioveronez/gpt-webapp:v1
