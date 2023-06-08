@@ -3,9 +3,9 @@ name: Docker Image CI
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "feature/kubernetes" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "feature/kubernetes" ]
 
 jobs:
 
