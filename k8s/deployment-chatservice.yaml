@@ -60,15 +60,15 @@ spec:
         - name: DB_DRIVER
           value: mysql
         - name: DB_HOST
-          value: mysql
+          value: chatservice.cgrcivy6tiia.us-east-1.rds.amazonaws.com
         - name: DB_PORT
           value: "3306"
         - name: DB_USER
-          value: root
+          value: chatservice
         - name: DB_PASSWORD
-          value: root
+          value: "Senha#1234"
         - name: DB_NAME
-          value: chat_service
+          value: chatservice
         - name: WEB_SERVER_PORT
           value: "8080"
         - name: GRPC_SERVER_PORT
