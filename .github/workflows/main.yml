@@ -74,5 +74,5 @@ jobs:
           k8s/deployment-chatservice.yaml
           k8s/deployment-nextjs.yaml
         images: |
-          fabricioveronez/gpt-chatservice
-          fabricioveronez/gpt-webapp:v1
+          fabricioveronez/gpt-chatservice:${{github.run_number}}
+          fabricioveronez/gpt-webapp:${{github.run_number}}
