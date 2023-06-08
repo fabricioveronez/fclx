@@ -67,9 +67,9 @@ spec:
         - name: KEYCLOAK_CLIENT_ID
           value: gpt-webapp
         - name: KEYCLOAK_CLIENT_SECRET
-          value: M8IMlr3clrQPR1UWrJmF8ZJQSsPb12rR
+          value: 6D9D0uHvDBzP667sUrcH1BB4nKdS5sYb
         - name: KEYCLOAK_ISSUER
-          value: http://keycloak:8080/realms/master
+          value: http://afd727aa39e11406bb89b7651c797426-1852716732.us-east-1.elb.amazonaws.com/realms/master
         - name: CHATSERVICE_URL
           value: "chatservice:50051"
 ---
