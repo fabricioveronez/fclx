@@ -23,8 +23,8 @@ jobs:
     - name: Construção da imagem Docker Front end
       uses: docker/build-push-action@v3.2.0
       with: 
-        context: ./nextjs
-        file: ./nextjs/Dockerfile
+        context: ./webapp
+        file: ./webapp/Dockerfile
         push: true
         tags: |
           fabricioveronez/gpt-front:${{github.run_number}}
