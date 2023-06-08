@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
       - name: chatservice
-        image: fabricioveronez/chatservice:v1
+        image: fabricioveronez/chatservice:{{TAG}}
         ports:
         - containerPort: 8080
           name: http
