@@ -1,31 +1,31 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: mysql-webapp
-spec:
-  selector:
-    matchLabels:
-      app: mysql-webapp
-  template:
-    metadata:
-      labels:
-        app: mysql-webapp
-    spec:
-      containers:
-      - name: mysql
-        image: mysql:8.0.30-debian
-        ports:
-        - containerPort: 3306
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: "root"
-        - name: MYSQL_DATABASE
-          value: "webchat"
-        - name: MYSQL_USER
-          value: "webchat"
-        - name: MYSQL_PASSWORD
-          value: "webchat"
----
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: mysql-webapp
+# spec:
+#   selector:
+#     matchLabels:
+#       app: mysql-webapp
+#   template:
+#     metadata:
+#       labels:
+#         app: mysql-webapp
+#     spec:
+#       containers:
+#       - name: mysql
+#         image: mysql:8.0.30-debian
+#         ports:
+#         - containerPort: 3306
+#         env:
+#         - name: MYSQL_ROOT_PASSWORD
+#           value: "root"
+#         - name: MYSQL_DATABASE
+#           value: "webchat"
+#         - name: MYSQL_USER
+#           value: "webchat"
+#         - name: MYSQL_PASSWORD
+#           value: "webchat"
+# ---
 apiVersion: v1
 kind: Service
 metadata:
@@ -59,17 +59,17 @@ spec:
           protocol: TCP
         env:
         - name: DATABASE_URL
-          value: "mysql://webapp:Senha#1234@webapp.cgrcivy6tiia.us-east-1.rds.amazonaws.com:3306/webapp"
+          value: "mysql://webapp:Senha1234@webapp.cgrcivy6tiia.us-east-1.rds.amazonaws.com:3306/webapp"
         - name: NEXTAUTH_URL
-          value: http://a2619f17e873b46f18d440a32af0077e-2061854654.us-east-1.elb.amazonaws.com/api/auth
+          value: http://addf89868ebff4c18a819763ee31e08f-1346861789.us-east-1.elb.amazonaws.com/api/auth
         - name: NEXTAUTH_SECRET
           value: "123456"
         - name: KEYCLOAK_CLIENT_ID
           value: gpt-webapp
         - name: KEYCLOAK_CLIENT_SECRET
-          value: 6D9D0uHvDBzP667sUrcH1BB4nKdS5sYb
+          value: WBEZRkwGALnUAFzed0BBYqlT6zW7CLMl
         - name: KEYCLOAK_ISSUER
-          value: http://aace834ce97814fe5b9ae2adb324bb62-2140267723.us-east-1.elb.amazonaws.com/realms/master
+          value: http://a4692f2c1f98f43509bc380b94f5f4a9-1631950130.us-east-1.elb.amazonaws.com/realms/master
         - name: CHATSERVICE_URL
           value: "chatservice:50051"
 ---

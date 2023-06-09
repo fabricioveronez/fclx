@@ -1,38 +1,38 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: mysql
-spec:
-  selector:
-    matchLabels:
-      app: mysql
-  template:
-    metadata:
-      labels:
-        app: mysql
-    spec:
-      containers:
-      - name: mysql
-        image: mysql:8
-        ports:
-        - containerPort: 3306
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: "root"
-        - name: MYSQL_DATABASE
-          value: "chat_service"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-spec:
-  selector:
-    app: mysql
-  ports:
-  - port: 3306
-    targetPort: 3306
----
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: mysql
+# spec:
+#   selector:
+#     matchLabels:
+#       app: mysql
+#   template:
+#     metadata:
+#       labels:
+#         app: mysql
+#     spec:
+#       containers:
+#       - name: mysql
+#         image: mysql:8
+#         ports:
+#         - containerPort: 3306
+#         env:
+#         - name: MYSQL_ROOT_PASSWORD
+#           value: "root"
+#         - name: MYSQL_DATABASE
+#           value: "chat_service"
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: mysql
+# spec:
+#   selector:
+#     app: mysql
+#   ports:
+#   - port: 3306
+#     targetPort: 3306
+# ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -64,9 +64,9 @@ spec:
         - name: DB_PORT
           value: "3306"
         - name: DB_USER
-          value: chatservice
+          value: admin
         - name: DB_PASSWORD
-          value: "Senha#1234"
+          value: "Senha1234"
         - name: DB_NAME
           value: chatservice
         - name: WEB_SERVER_PORT
@@ -87,7 +87,7 @@ metadata:
 spec:
   selector:
     app: chatservice
-  type: NodePort
+  type: ClusterIP
   ports:
     - port: 8080
       protocol: TCP
