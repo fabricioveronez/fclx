@@ -4,18 +4,24 @@ metadata:
   name: fclx
 build:
   artifacts:
-    # - image: fabricioveronez/gpt-chatservice
-    #   context: chatservice
-    #   docker:
-    #     dockerfile: Dockerfile
-    - image: fabricioveronez/gpt-nextjs
-      context: nextjs
+    - image: fabricioveronez/gpt-chatservice
+      context: chatservice
       docker:
-        dockerfile: Dockerfile.prod        
+        dockerfile: Dockerfile
+    - image: fabricioveronez/gpt-webapp
+      context: webapp
+      docker:
+        dockerfile: Dockerfile      
   
 manifests:
   rawYaml:
-    # - k8s/deployment-chatservice.yaml
+    - k8s/deployment-chatservice.yaml
     - k8s/deployment-nextjs.yaml
     # - k8s/deployment-keycloak.yaml
 
+# portForward:
+# - resourceType: service
+#   resourceName: keycloak
+#   namespace: default 
+#   port: 80
+#   localPort: 8080 # *Optional*

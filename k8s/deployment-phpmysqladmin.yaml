@@ -1,37 +1,37 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: phpmysqladmin
-spec:
-  selector:
-    matchLabels:
-      app: phpmysqladmin
-  template:
-    metadata:
-      labels:
-        app: phpmysqladmin
-    spec:
-      containers:
-      - name: phpmysqladmin
-        image: phpmyadmin
-        ports:
-        - containerPort: 80
-        env:
-        - name: PMA_USER
-          value: admin
-        - name: PMA_PASSWORD
-          value: admin1234       
-        - name: PMA_HOST
-          value: chatdb.cluster-cgrcivy6tiia.us-east-1.rds.amazonaws.com  
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: phpmysqladmin
-spec:
-  selector:
-    app: phpmysqladmin
-  ports:
-  - port: 80
-    targetPort: 80
-  type: LoadBalancer
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: phpmysqladmin
+# spec:
+#   selector:
+#     matchLabels:
+#       app: phpmysqladmin
+#   template:
+#     metadata:
+#       labels:
+#         app: phpmysqladmin
+#     spec:
+#       containers:
+#       - name: phpmysqladmin
+#         image: phpmyadmin
+#         ports:
+#         - containerPort: 80
+#         env:
+#         - name: PMA_USER
+#           value: admin
+#         - name: PMA_PASSWORD
+#           value: admin1234       
+#         - name: PMA_HOST
+#           value: chatdb.cluster-cgrcivy6tiia.us-east-1.rds.amazonaws.com  
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: phpmysqladmin
+# spec:
+#   selector:
+#     app: phpmysqladmin
+#   ports:
+#   - port: 80
+#     targetPort: 80
+#   type: LoadBalancer

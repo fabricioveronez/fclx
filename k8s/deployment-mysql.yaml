@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root"
+        - name: MYSQL_DATABASE
+          value: "chat_service"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  selector:
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-webapp
+spec:
+  selector:
+    matchLabels:
+      app: mysql-webapp
+  template:
+    metadata:
+      labels:
+        app: mysql-webapp
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0.30-debian
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root"
+        - name: MYSQL_DATABASE
+          value: "webchat"
+        - name: MYSQL_USER
+          value: "webchat"
+        - name: MYSQL_PASSWORD
+          value: "webchat"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-webapp
+spec:
+  selector:
+    app: mysql-webapp
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: fabricioveronez/gpt-webapp:v1
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        env:
+        - name: DATABASE_URL
+          value: "mysql://admin:Senha1234@webapp.cgrcivy6tiia.us-east-1.rds.amazonaws.com:3306/webapp"
+        - name: NEXTAUTH_URL
+          value: http://addf89868ebff4c18a819763ee31e08f-1346861789.us-east-1.elb.amazonaws.com/api/auth
+        - name: NEXTAUTH_SECRET
+          value: "123456"
+        - name: KEYCLOAK_CLIENT_ID
+          value: gpt-webapp
+        - name: KEYCLOAK_CLIENT_SECRET
+          value: WBEZRkwGALnUAFzed0BBYqlT6zW7CLMl
+        - name: KEYCLOAK_ISSUER
+          value: http://a4692f2c1f98f43509bc380b94f5f4a9-1631950130.us-east-1.elb.amazonaws.com/realms/master
+        - name: CHATSERVICE_URL
+          value: "chatservice:50051"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp
+spec:
+  selector:
+    app: webapp
+  type: LoadBalancer
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000
+      nodePort: 30003
+      name: http

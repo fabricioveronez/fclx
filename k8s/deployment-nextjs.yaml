@@ -26,17 +26,17 @@
 #         - name: MYSQL_PASSWORD
 #           value: "webchat"
 # ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql-webapp
-spec:
-  selector:
-    app: mysql-webapp
-  ports:
-  - port: 3306
-    targetPort: 3306
----
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: mysql-webapp
+# spec:
+#   selector:
+#     app: mysql-webapp
+#   ports:
+#   - port: 3306
+#     targetPort: 3306
+# ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -52,7 +52,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: fabricioveronez/gpt-webapp:v1
+        image: fabricioveronez/gpt-webapp
         ports:
         - containerPort: 3000
           name: http
@@ -85,5 +85,5 @@ spec:
     - port: 80
       protocol: TCP
       targetPort: 3000
-      nodePort: 30000
+      nodePort: 30003
       name: http
